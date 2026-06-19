@@ -4,42 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Золотая лихорадка</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --card: #1a1a1a;
-            --gold: #f6c948;
-            --neon: #39ff14;
-            --text: #ffffff;
-            --sub: #a0a0a0;
-            --danger: #ff3b3b;
-            --accent: #ff8c00;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            background: var(--bg);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text);
+            background: #0a0a0a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #fff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(ellipse at 50% 20%, rgba(246, 201, 72, 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 80%, rgba(57, 255, 20, 0.04) 0%, transparent 50%);
         }
-
         .app {
             width: 100%;
             max-width: 420px;
@@ -47,183 +22,61 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            position: relative;
+            gap: 16px;
         }
-
-        /* Header */
         .header {
             width: 100%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .balance-card {
-            background: var(--card);
-            border: 1px solid rgba(246, 201, 72, 0.3);
+        .card {
+            background: #1a1a1a;
             border-radius: 16px;
-            padding: 12px 18px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
             flex: 1;
-            box-shadow: 0 0 20px rgba(246, 201, 72, 0.1);
         }
-        .coin-icon {
-            width: 40px;
-            height: 40px;
+        .coin {
+            width: 40px; height: 40px;
             background: linear-gradient(135deg, #f6c948, #ff8c00);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-size: 22px;
-            animation: pulse-coin 2s infinite;
-            box-shadow: 0 0 15px rgba(246, 201, 72, 0.5);
         }
-        @keyframes pulse-coin {
-            0%,
-            100% {
-                box-shadow: 0 0 15px rgba(246, 201, 72, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(246, 201, 72, 0.8);
-            }
-        }
-        .balance-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .balance-label {
-            font-size: 11px;
-            color: var(--sub);
-            letter-spacing: 0.5px;
-        }
-        .balance-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-        }
-        .attempts-badge {
-            background: var(--card);
-            border: 1px solid rgba(57, 255, 20, 0.3);
+        .label { font-size: 11px; color: #a0a0a0; }
+        .value { font-size: 20px; font-weight: 700; color: #f6c948; }
+        .attempts-card {
+            background: #1a1a1a;
             border-radius: 16px;
             padding: 12px 16px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
             min-width: 60px;
         }
-        .attempts-num {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--neon);
-            line-height: 1;
-        }
-        .attempts-label {
-            font-size: 10px;
-            color: var(--sub);
-            letter-spacing: 0.5px;
-        }
-
-        /* Джекпот */
-        .jackpot-section {
+        .attempts-num { font-size: 28px; font-weight: 800; color: #39ff14; }
+        .jackpot-box {
             width: 100%;
-            background: linear-gradient(135deg, #1a1a1a, #2a1a00);
-            border: 2px solid var(--gold);
+            background: #1a1a1a;
+            border: 2px solid #f6c948;
             border-radius: 20px;
             padding: 16px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(246, 201, 72, 0.2), inset 0 0 30px rgba(246, 201, 72, 0.03);
-            position: relative;
-            overflow: hidden;
         }
-        .jackpot-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse, rgba(246, 201, 72, 0.08) 0%, transparent 70%);
-            animation: rotate-glow 8s linear infinite;
-        }
-        @keyframes rotate-glow {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .jackpot-label {
-            font-size: 12px;
-            color: var(--sub);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 1;
-        }
-        .jackpot-amount {
-            font-size: 42px;
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 20px rgba(246, 201, 72, 0.6);
-            position: relative;
-            z-index: 1;
-            letter-spacing: -1px;
-        }
-        .jackpot-currency {
-            font-size: 14px;
-            color: var(--accent);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Инпут */
-        .input-group {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .input-label {
-            font-size: 12px;
-            color: var(--sub);
-            text-align: center;
-        }
-        .number-input {
+        .jackpot-label { font-size: 12px; color: #a0a0a0; }
+        .jackpot-amount { font-size: 36px; font-weight: 900; color: #f6c948; }
+        input {
             width: 100%;
             padding: 16px;
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 24px;
             text-align: center;
-            background: var(--card);
+            background: #1a1a1a;
             border: 2px solid #333;
             border-radius: 16px;
-            color: var(--text);
+            color: #fff;
             outline: none;
-            transition: all 0.3s;
-            letter-spacing: 2px;
         }
-        .number-input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 20px rgba(246, 201, 72, 0.3);
-        }
-        .number-input::placeholder {
-            font-size: 16px;
-            color: #555;
-            letter-spacing: 0;
-        }
-        .hint-text {
-            font-size: 11px;
-            color: #666;
-            text-align: center;
-            min-height: 16px;
-            transition: all 0.3s;
-        }
-
-        /* Кнопки */
+        input:focus { border-color: #f6c948; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -232,211 +85,114 @@
             font-weight: 700;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
             text-transform: uppercase;
         }
-        .btn:active {
-            transform: scale(0.96);
-        }
-        .btn-primary {
+        .btn:active { transform: scale(0.96); }
+        .btn-gold {
             background: linear-gradient(135deg, #f6c948, #ff8c00);
             color: #000;
-            box-shadow: 0 8px 25px rgba(246, 201, 72, 0.3);
             font-size: 18px;
         }
-        .btn-primary:disabled {
-            background: #333;
-            color: #666;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-        .btn-buy {
+        .btn-gold:disabled { background: #333; color: #666; }
+        .btn-green {
             background: transparent;
-            border: 2px solid var(--neon);
-            color: var(--neon);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+            border: 2px solid #39ff14;
+            color: #39ff14;
         }
-        .btn-invite {
+        .btn-blue {
             background: transparent;
             border: 2px solid #5b9bd5;
             color: #5b9bd5;
-            box-shadow: 0 0 15px rgba(91, 155, 213, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
-        .btn-row {
-            width: 100%;
-            display: flex;
-            gap: 10px;
-        }
-        .btn-row .btn {
-            flex: 1;
-        }
-
-        /* Результат */
-        .result-toast {
+        .row { width: 100%; display: flex; gap: 10px; }
+        .row .btn { flex: 1; }
+        .hint { font-size: 12px; color: #a0a0a0; text-align: center; min-height: 18px; }
+        .toast {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--card);
-            border: 1px solid #333;
+            background: #1a1a1a;
+            border: 1px solid #f6c948;
             border-radius: 16px;
             padding: 14px 24px;
             z-index: 100;
-            text-align: center;
+            font-weight: 600;
+            color: #f6c948;
             opacity: 0;
             transition: all 0.4s;
             pointer-events: none;
-            white-space: nowrap;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        .result-toast.show {
-            opacity: 1;
-            top: 30px;
-        }
-        .result-toast.win {
-            border-color: var(--gold);
-            color: var(--gold);
-            box-shadow: 0 0 40px rgba(246, 201, 72, 0.5);
-        }
-
-        /* Фейерверк */
-        .firework {
-            position: fixed;
-            pointer-events: none;
-            z-index: 200;
-        }
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            animation: firework-burst 1s ease-out forwards;
-        }
-        @keyframes firework-burst {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--dx), var(--dy)) scale(0);
-                opacity: 0;
-            }
-        }
-        @keyframes shake {
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-5px);
-            }
-            75% {
-                transform: translateX(5px);
-            }
-        }
+        .toast.show { opacity: 1; top: 30px; }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- Header -->
         <div class="header">
-            <div class="balance-card">
-                <div class="coin-icon">🪙</div>
-                <div class="balance-info">
-                    <span class="balance-label">Баланс</span>
-                    <span class="balance-value" id="balance">250</span>
+            <div class="card">
+                <div class="coin">🪙</div>
+                <div>
+                    <div class="label">Баланс</div>
+                    <div class="value" id="balance">250</div>
                 </div>
             </div>
-            <div class="attempts-badge">
+            <div class="attempts-card">
                 <div class="attempts-num" id="attempts">10</div>
-                <div class="attempts-label">Попыток</div>
+                <div class="label">Попыток</div>
             </div>
         </div>
 
-        <!-- Джекпот -->
-        <div class="jackpot-section">
+        <div class="jackpot-box">
             <div class="jackpot-label">🏆 Джекпот</div>
             <div class="jackpot-amount" id="jackpot">12 500</div>
-            <div class="jackpot-currency">золотых монет</div>
+            <div class="label">золотых монет</div>
         </div>
 
-        <!-- Инпут -->
-        <div class="input-group">
-            <span class="input-label">Введите число от 1 до 1000</span>
-            <input
-            type="number"
-            class="number-input"
-            id="guessInput"
-            placeholder="1–1000"
-            min="1"
-            max="1000"
-            inputmode="numeric"
-            >
-            <span class="hint-text" id="hint"></span>
-        </div>
+        <input type="number" id="guessInput" placeholder="1–1000" min="1" max="1000" inputmode="numeric">
+        <div class="hint" id="hint"></div>
 
-        <!-- Основная кнопка -->
-        <button class="btn btn-primary" id="guessBtn">🔥 Испытать удачу</button>
+        <button class="btn btn-gold" id="guessBtn">🔥 Испытать удачу</button>
 
-        <!-- Кнопки действий -->
-        <div class="btn-row">
-            <button class="btn btn-buy" id="buyBtn">💎 +5 попыток</button>
-            <button class="btn btn-invite" id="inviteBtn">👥 Друга</button>
+        <div class="row">
+            <button class="btn btn-green" id="buyBtn">💎 +5 попыток</button>
+            <button class="btn btn-blue" id="inviteBtn">👥 Друга</button>
         </div>
     </div>
 
-    <!-- Тост -->
-    <div class="result-toast" id="toast"></div>
+    <div class="toast" id="toast"></div>
 
     <script>
-        (function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram.WebApp;
-            tg.ready();
-            tg.expand();
-            tg.setHeaderColor('#0a0a0a');
-            tg.setBackgroundColor('#0a0a0a');
+        // Ждём полной загрузки страницы
+        window.addEventListener('DOMContentLoaded', function() {
+            // === НАСТРОЙКИ ===
+            var SECRET = Math.floor(Math.random() * 1000) + 1;
+            var MAX_TRIES = 10;
+            var tries = MAX_TRIES;
+            var balance = 250;
+            var jackpot = 12500;
+            var gameOver = false;
 
-            // Состояние
-            const SECRET_NUMBER = Math.floor(Math.random() * 1000) + 1;
-            const MAX_ATTEMPTS = 10;
+            // === ЭЛЕМЕНТЫ ===
+            var attemptsEl = document.getElementById('attempts');
+            var balanceEl = document.getElementById('balance');
+            var jackpotEl = document.getElementById('jackpot');
+            var guessInput = document.getElementById('guessInput');
+            var guessBtn = document.getElementById('guessBtn');
+            var buyBtn = document.getElementById('buyBtn');
+            var inviteBtn = document.getElementById('inviteBtn');
+            var hintEl = document.getElementById('hint');
+            var toast = document.getElementById('toast');
 
-            let attempts = MAX_ATTEMPTS;
-            let balance = 250;
-            let jackpot = 12500;
-            let gameOver = false;
-
-            // DOM
-            const attemptsEl = document.getElementById('attempts');
-            const balanceEl = document.getElementById('balance');
-            const jackpotEl = document.getElementById('jackpot');
-            const guessInput = document.getElementById('guessInput');
-            const guessBtn = document.getElementById('guessBtn');
-            const buyBtn = document.getElementById('buyBtn');
-            const inviteBtn = document.getElementById('inviteBtn');
-            const hintEl = document.getElementById('hint');
-            const toast = document.getElementById('toast');
-
-            // Формат чисел
+            // === ФУНКЦИИ ===
             function formatNum(n) {
                 return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
             }
 
-            // Обновление UI
             function updateUI() {
-                attemptsEl.textContent = attempts;
+                attemptsEl.textContent = tries;
                 balanceEl.textContent = formatNum(balance);
                 jackpotEl.textContent = formatNum(jackpot);
-
-                if (attempts <= 0 || gameOver) {
+                if (tries <= 0 || gameOver) {
                     guessBtn.disabled = true;
                     guessBtn.textContent = gameOver ? '🎉 ДЖЕКПОТ!' : '😔 Попытки кончились';
                 } else {
@@ -445,181 +201,95 @@
                 }
             }
 
-            // Показать тост
-            function showToast(msg, isWin = false) {
+            function showToast(msg) {
                 toast.textContent = msg;
-                toast.className = 'result-toast show' + (isWin ? ' win' : '');
+                toast.className = 'toast show';
                 clearTimeout(toast._timeout);
-                toast._timeout = setTimeout(() => {
-                    toast.className = 'result-toast';
-                }, 2500);
+                toast._timeout = setTimeout(function() {
+                    toast.className = 'toast';
+                }, 2000);
             }
 
-            // Фейерверк
-            function launchFireworks() {
-                const colors = ['#f6c948', '#ff8c00', '#39ff14', '#ff3b3b', '#5b9bd5', '#ff69b4',
-                '#ffffff'];
-                const container = document.createElement('div');
-                container.className = 'firework';
-                container.style.left = '50%';
-                container.style.top = '40%';
-                document.body.appendChild(container);
-
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 50 + Math.random() * 150;
-                    particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
-                    particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
-                    particle.style.animationDelay = Math.random() * 0.3 + 's';
-                    particle.style.animationDuration = 0.8 + Math.random() * 0.8 + 's';
-                    container.appendChild(particle);
-                }
-
-                // Вибрировать
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                    setTimeout(() => tg.HapticFeedback.notificationOccurred('success'), 200);
-                }
-
-                setTimeout(() => container.remove(), 2000);
-            }
-
-            // Тряска при ошибке
-            function shakeApp() {
-                const app = document.querySelector('.app');
-                app.style.animation = 'shake 0.5s ease';
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('error');
-                }
-                setTimeout(() => app.style.animation = '', 500);
-            }
-
-            // Проверка числа
             function checkGuess() {
-                if (gameOver || attempts <= 0) return;
+                if (gameOver || tries <= 0) return;
 
-                const raw = guessInput.value.trim();
-                const guess = parseInt(raw, 10);
+                var raw = guessInput.value.trim();
+                var guess = parseInt(raw, 10);
 
                 if (isNaN(guess) || guess < 1 || guess > 1000) {
                     hintEl.textContent = '⚠️ Введите число от 1 до 1000';
                     hintEl.style.color = '#ff3b3b';
-                    shakeApp();
                     return;
                 }
 
-                attempts--;
+                tries--;
                 guessInput.value = '';
-                hintEl.style.color = '#666';
+                hintEl.style.color = '#a0a0a0';
 
-                if (guess === SECRET_NUMBER) {
-                    // ПОБЕДА!
+                if (guess === SECRET) {
                     gameOver = true;
-                    hintEl.textContent = '';
-                    showToast(`🎉 Вы угадали! +${formatNum(jackpot)} монет!`, true);
-                    launchFireworks();
+                    hintEl.textContent = '🎉 ДЖЕКПОТ! Вы угадали число!';
+                    hintEl.style.color = '#f6c948';
+                    showToast('🎉 Вы угадали! +' + formatNum(jackpot) + ' монет!');
                     balance += jackpot;
                     jackpot = 0;
                     updateUI();
-
-                    // Вибрируем мощно
-                    if (tg.HapticFeedback) {
-                        for (let i = 0; i < 5; i++) {
-                            setTimeout(() => tg.HapticFeedback.impactOccurred('heavy'), i * 150);
-                        }
-                    }
-                } else if (attempts <= 0) {
-                    // Проигрыш
-                    hintEl.textContent = `😢 Не угадали. Число было: ${SECRET_NUMBER}`;
+                } else if (tries <= 0) {
+                    hintEl.textContent = '😢 Не угадали. Число: ' + SECRET;
                     hintEl.style.color = '#ff3b3b';
                     showToast('😔 Попытки закончились');
-                    shakeApp();
                     updateUI();
                 } else {
-                    // Подсказка
-                    const diff = Math.abs(guess - SECRET_NUMBER);
-                    let hint = '';
-                    if (guess < SECRET_NUMBER) {
+                    var diff = Math.abs(guess - SECRET);
+                    var hint = '';
+                    if (guess < SECRET) {
                         hint = diff <= 50 ? '📈 Очень близко! Берите выше ↑' :
-                            diff <= 200 ? '📈 Берите выше' : '📈 Сильно выше';
+                               diff <= 200 ? '📈 Берите выше' : '📈 Сильно выше';
                     } else {
                         hint = diff <= 50 ? '📉 Очень близко! Берите ниже ↓' :
-                            diff <= 200 ? '📉 Берите ниже' : '📉 Сильно ниже';
+                               diff <= 200 ? '📉 Берите ниже' : '📉 Сильно ниже';
                     }
-                    hintEl.textContent = `${hint} • Осталось попыток: ${attempts}`;
+                    hintEl.textContent = hint + ' • Осталось: ' + tries;
                     hintEl.style.color = diff <= 50 ? '#f6c948' : '#a0a0a0';
                     showToast(hint);
                     updateUI();
                 }
             }
 
-            // Купить попытки (заглушка инвойса)
             function buyAttempts() {
-                if (tg.isVersionAtLeast('6.1')) {
-                    // Пробуем открыть инвойс (заглушка)
-                    try {
-                        tg.openInvoice('https://t.me/invoice/test-invoice-link', (status) => {
-                            if (status === 'paid') {
-                                attempts += 5;
-                                updateUI();
-                                showToast('✅ +5 попыток!');
-                            }
-                        });
-                    } catch (e) {
-                        // Если инвойс не настроен — даём демо-попытки
-                        attempts += 5;
-                        updateUI();
-                        showToast('✅ +5 попыток (демо)!');
-                    }
-                } else {
-                    // Фолбек для старых версий
-                    attempts += 5;
-                    updateUI();
-                    showToast('✅ +5 попыток (демо)!');
-                }
+                tries += 5;
+                updateUI();
+                showToast('✅ +5 попыток!');
             }
 
-            // Пригласить друга
             function inviteFriend() {
-                const refLink = `https://t.me/share/url?url=https://t.me/GoldFeverGamebot/app&text=💰%20Играй%20в%20Золотую%20лихорадку!%20Джекпот%20${formatNum(jackpot)}%20монет!`;
-                if (tg.openTelegramLink) {
-                    tg.openTelegramLink(refLink);
-                } else {
-                    window.open(refLink, '_blank');
-                }
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
+                var refLink = 'https://t.me/share/url?url=https://t.me/your_bot/app&text=💰 Джекпот ' + formatNum(jackpot) + ' монет!';
+                window.open(refLink, '_blank');
+                showToast('📤 Отправь ссылку другу!');
             }
 
-            // Обработчики
+            // === ПОДКЛЮЧАЕМ ОБРАБОТЧИКИ ===
             guessBtn.addEventListener('click', checkGuess);
             buyBtn.addEventListener('click', buyAttempts);
             inviteBtn.addEventListener('click', inviteFriend);
 
-            // Enter в инпуте
-            guessInput.addEventListener('keydown', (e) => {
+            guessInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') checkGuess();
             });
 
-            // Сброс игры (долгое нажатие на джекпот)
-            const jackpotSection = document.querySelector('.jackpot-section');
-            let resetTimer;
-            jackpotSection.addEventListener('pointerdown', () => {
-                resetTimer = setTimeout(() => {
-                    location.reload();
-                }, 3000);
-            });
-            jackpotSection.addEventListener('pointerup', () => clearTimeout(resetTimer));
-            jackpotSection.addEventListener('pointerleave', () => clearTimeout(resetTimer));
-
-            // Старт
+            // === СТАРТ ===
             updateUI();
-            console.log('🎯 Загаданное число (для теста):', SECRET_NUMBER);
-        })();
+            console.log('✅ Приложение запущено! Загаданное число: ' + SECRET);
+
+            // === TELEGRAM SDK (если есть) ===
+            try {
+                var tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+            } catch(e) {
+                console.log('Telegram SDK не загружен, но приложение работает');
+            }
+        });
     </script>
 </body>
-  </html>
+    </html>
